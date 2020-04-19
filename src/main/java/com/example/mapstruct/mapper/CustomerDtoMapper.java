@@ -7,11 +7,13 @@ import com.example.mapstruct.model.DeliveryAddress;
 import org.mapstruct.*;
 
 import java.util.List;
+import java.util.UUID;
 
 /**
  * @author z.Taghizadeh
  */
-@Mapper(nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS,
+@Mapper(imports = UUID.class,
+        nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS,
         componentModel = "spring")
 public interface CustomerDtoMapper {
 
@@ -40,7 +42,8 @@ public interface CustomerDtoMapper {
             @Mapping(source = "birthDate", target = "birthDate",
                     qualifiedByName = "convertToNumberDate"),
             @Mapping(target = "startDt", source = "customerDto.customerStartDt",
-                    dateFormat = "dd-MM-yyyy HH:mm:ss")
+                    dateFormat = "dd-MM-yyyy HH:mm:ss"),
+            @Mapping(target="customerId",expression="java( UUID.randomUUID().toString() )")
     })
     Customer fromCustomerDoToCustomer(CustomerDto customerDto);
 
